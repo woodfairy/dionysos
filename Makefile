@@ -8,10 +8,8 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = Dionysos
 
 Dionysos_FILES = Tweak.x
-Dionysos_CFLAGS = -fobjc-arc
+Dionysos_CFLAGS = -fobjc-arc -I./mobileffmpeg/include
 Dionysos_FRAMEWORKS = CoreMotion GameController VideoToolbox Accelerate
-
-Dionysos_CFLAGS = -I./mobileffmpeg/include
 Dionysos_LDFLAGS = -L./mobileffmpeg/lib \
 			-laom -lass -lavcodec -lavdevice -lavfilter -lavformat \
 			-lavutil -lexpat -lfontconfig -lfreetype -lfribidi \

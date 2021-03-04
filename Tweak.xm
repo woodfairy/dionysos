@@ -1,6 +1,5 @@
 #import <Foundation/Foundation.h>
-#import <mobileffmpeg/MobileFFmpegConfig.h>
-#import <mobileffmpeg/MobileFFmpeg.h>
+#import "Dionysos/DionysosConverter.h"
 
 
 @interface NSUserDefaults (Tweak_Category)
@@ -18,15 +17,6 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 }
 
 %ctor {
-	int rc = [MobileFFmpeg execute: @"-i test.mp4 -c:v mpeg4 test2.mp4"];
-
-	if (rc == RETURN_CODE_SUCCESS) {
-		NSLog(@"Command execution completed successfully.\n");
-	} else if (rc == RETURN_CODE_CANCEL) {
-		NSLog(@"Command execution cancelled by user.\n");
-	} else {
-		NSLog(@"Command execution failed with rc=%d and output=%@.\n", rc, [MobileFFmpegConfig getLastCommandOutput]);
-	}
 	// Set variables on start up
 	notificationCallback(NULL, NULL, NULL, NULL, NULL);
 
@@ -34,5 +24,10 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, notificationCallback, (CFStringRef)nsNotificationString, NULL, CFNotificationSuspensionBehaviorCoalesce);
 
 	// Add any personal initializations
-
+	if (enabled) {
+		DionysosConverter *converter = [[DionysosConverter alloc] init];
+		NSLog(@"<Dionysos> Created converter %@", converter);
+		int rc = [converter convertToMp3:@"/var/mobile/Documents/sample-mp4-file.mp4" forTarget:@"/var/mobile/Downloads/AAAAAAAAtarget.mp4"];
+		NSLog(@"<Dionysos> Converting finished with rc %d", rc);
+	}
 }

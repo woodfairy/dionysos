@@ -1,0 +1,24 @@
+#import "DionysosConverter.h"
+
+@implementation DionysosConverter
+-(int)convertToMp3:(NSString *)source forTarget:(NSString *)dest {
+	// TODO: remove log noise of mobileffmpeg
+	NSLog(@"<Dionysos> convertToMp3 - source: %@ - dest: %@", source, dest);
+	NSString *ffmpegCommand = [NSString stringWithFormat:@"-i %@ -c:v mpeg4 %@", source, dest];
+	NSLog(@"<Dionysos> executing > %@", ffmpegCommand);
+    int rc = [MobileFFmpeg execute:ffmpegCommand];
+	NSLog(@"<Dionysos> rc %d", rc);
+
+	if (rc == RETURN_CODE_SUCCESS) { // 0
+		NSLog(@"<Dionysos> Command execution completed successfully.\n");
+	} else if (rc == RETURN_CODE_CANCEL) { // TODO: dunno yet, probably 2 (?)
+		NSLog(@"<Dionysos> Command execution cancelled by user.\n");
+	} else { // 1 or anything else. How do we get the last command output? 
+		NSLog(@"<Dionysos> Command execution failed with rc %d.\n", rc);
+	}
+
+	NSLog(@"<Dionysos> END ---------------------------------------------------------------->");
+
+    return rc;
+}
+@end

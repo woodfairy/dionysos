@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2020 Taner Sener
+ * Copyright (c) 2018 Taner Sener
  *
  * This file is part of MobileFFmpeg.
  *
@@ -25,14 +25,7 @@
  */
 @interface MediaInformation : NSObject
 
-- (instancetype)init:(NSDictionary*)mediaDictionary withStreams:(NSArray*)streams;
-
-/**
- * Returns file name.
- *
- * @return media file name
- */
-- (NSString*)getFilename;
+- (instancetype)init;
 
 /**
  * Returns format.
@@ -42,46 +35,103 @@
 - (NSString*)getFormat;
 
 /**
- * Returns long format.
+ * Sets media format.
  *
- * @return media long format
+ * @param format media format
  */
-- (NSString*)getLongFormat;
+- (void)setFormat:(NSString*)format;
+
+/**
+ * Returns path.
+ *
+ * @return media path
+ */
+- (NSString*)getPath;
+
+/**
+ * Sets media path.
+ *
+ * @param path media path
+ */
+- (void)setPath:(NSString*)path;
 
 /**
  * Returns duration.
  *
  * @return media duration in milliseconds
  */
-- (NSString*)getDuration;
+- (NSNumber*)getDuration;
+
+/**
+ * Sets media duration.
+ *
+ * @param duration media duration in milliseconds
+ */
+- (void)setDuration:(NSNumber*) duration;
 
 /**
  * Returns start time.
  *
  * @return media start time in milliseconds
  */
-- (NSString*)getStartTime;
+- (NSNumber*)getStartTime;
 
 /**
- * Returns size.
+ * Sets media start time.
  *
- * @return media size in bytes
+ * @param startTime media start time in milliseconds
  */
-- (NSString*)getSize;
+- (void)setStartTime:(NSNumber*)startTime;
 
 /**
  * Returns bitrate.
  *
  * @return media bitrate in kb/s
  */
-- (NSString*)getBitrate;
+- (NSNumber*)getBitrate;
 
 /**
- * Returns all tags.
+ * Sets bitrate.
  *
- * @return tags dictionary
+ * @param bitrate media bitrate in kb/s
  */
-- (NSDictionary*)getTags;
+- (void)setBitrate:(NSNumber*) bitrate;
+
+/**
+ * Returns unparsed media information.
+ *
+ * @return unparsed media information data
+ */
+- (NSString*)getRawInformation;
+
+/**
+ * Sets unparsed media information.
+ *
+ * @param rawInformation unparsed media information data
+ */
+- (void)setRawInformation:(NSString*)rawInformation;
+
+/**
+ * Adds metadata.
+ *
+ * @param key metadata key
+ * @param value metadata value
+ */
+- (void)addMetadata:(NSString*)key :(NSString*)value;
+
+/**
+ * Returns all metadata entries.
+ *
+ * @return metadata dictionary
+ */
+- (NSDictionary*)getMetadataEntries;
+
+/**
+ * Adds new stream.
+ *
+ * @param stream new stream information
+ */
+- (void)addStream:(StreamInformation*) stream;
 
 /**
  * Returns all streams.
@@ -89,40 +139,5 @@
  * @return streams array
  */
 - (NSArray*)getStreams;
-
-/**
- * Returns the media property associated with the key.
- *
- * @return media property as string or nil if the key is not found
- */
-- (NSString*)getStringProperty:(NSString*)key;
-
-/**
- * Returns the media property associated with the key.
- *
- * @return media property as number or nil if the key is not found
- */
-- (NSNumber*)getNumberProperty:(NSString*)key;
-
-/**
- * Returns the media properties associated with the key.
- *
- * @return media properties in a dictionary or nil if the key is not found
-*/
-- (NSDictionary*)getProperties:(NSString*)key;
-
-/**
- * Returns all media properties.
- *
- * @return all media properties in a dictionary or nil if no media properties are defined
-*/
-- (NSDictionary*)getMediaProperties;
-
-/**
- * Returns all properties defined.
- *
- * @return all properties in a dictionary or nil if no properties are defined
-*/
-- (NSDictionary*)getAllProperties;
 
 @end

@@ -7,18 +7,18 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = Dionysos
 
-Dionysos_FILES = Tweak.x
+Dionysos_FILES = Tweak.xm $(wildcard Dionysos/*.xm)
 Dionysos_CFLAGS = -fobjc-arc -I./mobileffmpeg/include
-Dionysos_FRAMEWORKS = CoreMotion GameController VideoToolbox Accelerate
+Dionysos_FRAMEWORKS = CoreMotion GameController VideoToolbox Accelerate AudioToolbox CoreAudio
 Dionysos_LDFLAGS = -L./mobileffmpeg/lib \
 			-laom -lass -lavcodec -lavdevice -lavfilter -lavformat \
-			-lavutil -lexpat -lfontconfig -lfreetype -lfribidi \
-			-lgif -lgmp -lgnutls -lhogweeg -lilbc -ljpeg -lbkvazaar \
-			-lmobileffmpeg -lmp3lame -lnettle -logg -lopencore-amrnb \
-			-lopus -lpng -lshine -snappy -lsndfile -lsoxr -lspeex \
+			-lavutil -lcharset -lexpat -lfontconfig -lfreetype -lfribidi \
+			-lgif -lgmp -lgnutls -lhogweed -liconv -lilbc -ljpeg -lkvazaar \
+			-lmobileffmpeg -lmp3lame -lnettle -logg -lopencore-amrnb -lopencore-amrwb \
+			-lopus -lpng -lshine -lsnappy -lsndfile -lsoxr -lspeex \
 			-lswresample -lswscale -ltheora -ltheoradec -ltheoraenc \
-			-ltiff -ltwolame -lvo-amrwbenc -lvorbis -lvorbisenc -lvorbisfile \
-			-lvpx -lwavpack -lwebp -lwebpdemux -lwebpmux -lxml2 \
+			-ltiff -ltwolame -luuid  -lvorbis -lvorbisenc -lvorbisfile \
+			-lvpx -lwavpack -lwebp -lwebpdecoder -lwebpdemux -lxml2 \
 			-lbz2 -lc++ -liconv -lz
 
 include $(THEOS_MAKE_PATH)/tweak.mk

@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import "Dionysos/DionysosConverter.h"
 
 
 @interface NSUserDefaults (Tweak_Category)
@@ -25,9 +24,6 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 
 	// Add any personal initializations
 	if (enabled) {
-		DionysosConverter *converter = [[DionysosConverter alloc] init];
-		NSLog(@"<Dionysos> Created converter %@", converter);
-		int rc = [converter convertToMp3:@"/var/mobile/Documents/sample-mp4-file.mp4" forTarget:@"/var/mobile/Downloads/AAAAAAAAtarget.mp4"];
-		NSLog(@"<Dionysos> Converting finished with rc %d", rc);
+		NSLog(@"<Dionysos> YouTube injection succesful!");
 	}
 }

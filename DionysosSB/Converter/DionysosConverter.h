@@ -11,5 +11,5 @@
 #import <MobileFFmpeg.h>
 
 @interface DionysosConverter : NSObject
--(int)convertToMp3:(NSString *)source forTarget:(NSString *)target;
+-(int)convert:(NSString *)source toTarget:(NSString *)target;
 @end

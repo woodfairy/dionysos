@@ -1,10 +1,10 @@
 #import "DionysosConverter.h"
 
 @implementation DionysosConverter
--(int)convertToMp3:(NSString *)source forTarget:(NSString *)dest {
+-(int)convert:(NSString *)source toTarget:(NSString *)dest {
 	// TODO: remove log noise of mobileffmpeg
 	NSLog(@"<Dionysos> convertToMp3 - source: %@ - dest: %@", source, dest);
-	NSString *ffmpegCommand = [NSString stringWithFormat:@"-i %@ -c:v mpeg4 %@", source, dest];
+	NSString *ffmpegCommand = [NSString stringWithFormat:@"-i %@ -q:a 0 -map a %@", source, dest];
 	NSLog(@"<Dionysos> executing > %@", ffmpegCommand);
     int rc = [MobileFFmpeg execute:ffmpegCommand];
 	NSLog(@"<Dionysos> rc %d", rc);

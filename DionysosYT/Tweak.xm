@@ -6,12 +6,12 @@
 - (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
 @end
 
-static NSString * nsDomainString = @"0xcc.woodfairy.dionysos";
-static NSString * nsNotificationString = @"0xcc.woodfairy.dionysos/preferences.changed";
+static NSString *nsDomainString = @"0xcc.woodfairy.dionysos";
+static NSString *nsNotificationString = @"0xcc.woodfairy.dionysos/preferences.changed";
 static BOOL enabled;
 
 static void notificationCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
-	NSNumber * enabledValue = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"enabled" inDomain:nsDomainString];
+	NSNumber *enabledValue = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"enabled" inDomain:nsDomainString];
 	enabled = (enabledValue) ? [enabledValue boolValue] : YES;
 }
 

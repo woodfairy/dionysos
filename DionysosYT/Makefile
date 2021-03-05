@@ -8,6 +8,7 @@ include $(THEOS)/makefiles/common.mk
 TWEAK_NAME = DionysosYT
 
 DionysosYT_FILES = Tweak.xm 
+DionysosYT_LIBRARIES = mryipc
 DionysosYT_CFLAGS = -fobjc-arc
 DionysosYT_FRAMEWORKS = Foundation
 

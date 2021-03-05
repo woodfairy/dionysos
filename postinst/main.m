@@ -11,11 +11,13 @@ NSString* launchTask(NSString *launchPath, NSArray *arguments);
 
 
 int main(int argc, char *argv[], char *envp[]) {
+    /*
     setPipCacheDirectoryOwner(@"root");
     ensurePip();
     setPipCacheDirectoryOwner(@"root");
     installYoutubeDl();
     setPipCacheDirectoryOwner(@"mobile");
+    */
 	return 0;
 }
 

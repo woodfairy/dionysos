@@ -1,9 +1,8 @@
 #include "DionysosYT.h"
-#import <Foundation/Foundation.h>
-#import <MRYIPCCenter.h>
 
 MRYIPCCenter *center;
-YTPlayerViewController *viewController;
+
+
 int counter = 0;
 
 @interface NSUserDefaults (Tweak_Category)
@@ -14,6 +13,7 @@ int counter = 0;
 static NSString *nsDomainString = @"0xcc.woodfairy.dionysos";
 static NSString *nsNotificationString = @"0xcc.woodfairy.dionysos/preferences.changed";
 static BOOL enabled;
+//static BOOL downloading = NO;
 
 static void notificationCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
 	NSNumber *enabledValue = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"enabled" inDomain:nsDomainString];
@@ -22,18 +22,37 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 
 
 %hook YTPlayerViewController
--(id) init {
-	NSLog(@"<DionysosYT> YTPlayerViewController init");
-	viewController = %orig;
-	return viewController;
-}
--(id) contentVideoID {
+-(id)contentVideoID {
 	NSString *orig = %orig;
-	NSLog(@"<DionysosYT> YTPlayerViewController orig %@ - count %d", orig, ++counter);
-	NSString *url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", orig];
-	NSString* result = [center callExternalMethod:@selector(downloadAndConvert:) withArguments:@{@"url" : url}];
-	NSLog(@"Finished external call with result %@", result);
+	NSLog(@"<DionysosYT> Starting download for ID %@ - count %d", orig, ++counter);
+/*
+	if (!downloading) {
+		downloading = YES;
+		dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+			NSString *url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", orig];
+			NSString *result = [center callExternalMethod:@selector(downloadAndConvert:) withArguments:@{@"url" : url}];
+			NSLog(@"Finished external call with result %@", result);
+			downloading = NO;
+		});
+	}*/
 	return %orig;
+}
+%end
+
+
+%hook YTSlimVideoDetailsActionView
+-(void)didTapButton:(id)arg1 {
+	NSLog(@"<DionysosYT> didTapButton");
+	YTFormattedStringLabel *label = [self label];
+	NSAttributedString *attributedString = label.attributedText;
+	NSString *strLabel = attributedString.string;
+	NSLog(@"<DionysosYT> Label: %@", strLabel);
+	if ([strLabel isEqualToString:@"Download"]) {
+		NSLog(@"<DionysosYT> Download button triggered!");
+	} else {
+		%orig;
+	}
+
 }
 %end
 

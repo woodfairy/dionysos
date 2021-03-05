@@ -1,7 +1,18 @@
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <MRYIPCCenter.h>
 
 @interface YTPlayerViewController
--(id)init;
 -(id)contentVideoID;
--(void)setClipID:(id)arg1;
 @end
+
+@interface YTSlimVideoDetailsActionView : UIView
+-(void)didTapButton:(id)arg1;
+-(id)label;
+@end
+
+@interface YTFormattedStringLabel : UILabel
+@end
+
+

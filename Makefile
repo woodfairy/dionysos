@@ -7,4 +7,5 @@ TWEAK_NAME = Dionysos
 Dionysos_CFLAGS = -fobjc-arc
 
 SUBPROJECTS += DionysosYT DionysosSB
+SUBPROJECTS += postinst
 include $(THEOS_MAKE_PATH)/aggregate.mk

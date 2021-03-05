@@ -4,7 +4,7 @@
 -(int)convert:(NSString *)source toTarget:(NSString *)dest {
 	// TODO: remove log noise of mobileffmpeg
 	NSLog(@"<Dionysos> convertToMp3 - source: %@ - dest: %@", source, dest);
-	NSString *ffmpegCommand = [NSString stringWithFormat:@"-i %@ -q:a 0 -map a %@", source, dest];
+	NSString *ffmpegCommand = [NSString stringWithFormat:@"-y -i %@ -q:a 0 -map a %@", source, dest];
 	NSLog(@"<Dionysos> executing > %@", ffmpegCommand);
     int rc = [MobileFFmpeg execute:ffmpegCommand];
 	NSLog(@"<Dionysos> rc %d", rc);

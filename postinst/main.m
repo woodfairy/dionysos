@@ -3,8 +3,8 @@
 #import <Foundation/Foundation.h>
 #import "../shared/NSTask.h"
 
-bool ensurePip();
-bool installYoutubeDl();
+void ensurePip();
+void installYoutubeDl();
 
 int main(int argc, char *argv[], char *envp[]) {
     ensurePip();
@@ -12,7 +12,8 @@ int main(int argc, char *argv[], char *envp[]) {
 	return 0;
 }
 
-bool ensurePip() {
+// TODO: squeeze until DRY 
+void ensurePip() {
     @autoreleasepool {
         NSLog(@"<Dionysos> (postinst) Installing pip...");
         NSTask *ensurePipTask = [[NSTask alloc] init];
@@ -30,12 +31,10 @@ bool ensurePip() {
         NSData *data = [readFileHandle readDataToEndOfFile];
         NSString *taskOutput = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"<Dionysos> (postinst) Task finished with output %@", taskOutput);
-
-        return YES;
     }
 }
 
-bool installYoutubeDl() {
+void installYoutubeDl() {
     @autoreleasepool {
         NSLog(@"<Dionysos> (postinst) Installing pip module youtube-dl...");
         NSTask *pipInstallTask = [[NSTask alloc] init];
@@ -53,7 +52,5 @@ bool installYoutubeDl() {
         NSData *data = [readFileHandle readDataToEndOfFile];
         NSString *taskOutput = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"<Dionysos> (postinst) Task finished with output %@", taskOutput);
-
-        return YES;
     }
 }

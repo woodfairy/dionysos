@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
+#import <MRYIPCCenter.h>
 
+MRYIPCCenter *serverCenter;
 
 @interface NSUserDefaults (Tweak_Category)
 - (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
@@ -24,6 +26,8 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 
 	// Add any personal initializations
 	if (enabled) {
-		NSLog(@"<Dionysos> YouTube injection succesful!");
+		serverCenter = [MRYIPCCenter centerNamed:@"0xcc.woodfairy.DionysosServer"];
+		NSString* result = [serverCenter callExternalMethod:@selector(downloadAndConvert:) withArguments:@{@"url" : @"https://www.youtube.com/watch?v=dQw4w9WgXcQ"}];
+		NSLog(@"Finished external call with result %@", result);
 	}
 }

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "Converter/DionysosConverter.h"
-#import "Converter/NSTask.h"
+#import "../shared/NSTask.h"
 
 
 @interface NSUserDefaults (Tweak_Category)
@@ -28,12 +28,12 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 	// Add any personal initializations
 	if (enabled) {
         NSTask *youtubeDownloadTask = [[NSTask alloc] init];
-        NSPipe * out = [NSPipe pipe];
+        NSPipe *out = [NSPipe pipe];
         [youtubeDownloadTask setStandardOutput:out];
         NSLog(@"<Dionysos> Created task %@", youtubeDownloadTask);
-        [youtubeDownloadTask setLaunchPath:@"/var/mobile/.local/bin/youtube-dl"];
+        [youtubeDownloadTask setLaunchPath:@"/usr/local/bin/youtube-dl"];
         [youtubeDownloadTask setCurrentDirectoryPath:@"/var/mobile/Downloads"];
-        [youtubeDownloadTask setArguments:@[@"https://www.youtube.com/watch?v=ETf1OdmQnRI", @"-f", @"best[ext=mp4]", @"-o", @"ytdl.mp4"]];
+        [youtubeDownloadTask setArguments:@[@"https://www.youtube.com/watch?v=dQw4w9WgXcQ", @"-f", @"best[ext=mp4]", @"--no-continue", @"-o", @"ytdl.mp4"]];
         NSLog(@"<Dionysos> Launching NSTask");
         [youtubeDownloadTask launch];
         [youtubeDownloadTask waitUntilExit];
@@ -44,7 +44,7 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
         NSLog(@"<Dionysos> Task finished");
 		DionysosConverter *converter = [[DionysosConverter alloc] init];
 		NSLog(@"<Dionysos> Created converter %@", converter);
-		int rc = [converter convert:@"/var/mobile/Documents/sample-mp4-file.mp4" toTarget:@"/var/mobile/Downloads/AAAAAAAAtarget.mp3"];
+		int rc = [converter convert:@"/var/mobile/Downloads/ytdl.mp4" toTarget:@"/var/mobile/Downloads/AAAAAAADionysosConverter.wav"];
 		NSLog(@"<Dionysos> Converting finished with rc %d", rc);
 	}
 }

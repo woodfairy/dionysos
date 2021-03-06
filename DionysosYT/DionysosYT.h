@@ -15,4 +15,12 @@
 @interface YTFormattedStringLabel : UILabel
 @end
 
+@interface YTISlimVideoInformationRenderer : NSObject
+-(void)setTitle:(id)title;
+-(id)title;
+@end
+
+@interface YTIFormattedString : NSString
+-(id)dropdownOptionTitle;
+@end
 

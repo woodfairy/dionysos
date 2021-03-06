@@ -1,15 +1,26 @@
 #import "DionysosDownloader.h"
 
 @implementation DionysosDownloader : NSObject
--(NSString*) downloadFrom:(NSString* )url destination:(NSString *)dest {
-    NSLog(@"<Dionysos> Starting download for URL %@", url);
+-(NSString*) downloadFrom:(NSString* )url destination:(NSString *)dest title:(NSString *)filename {
+    NSLog(@"<Dionysos> Starting download for URL %@ - %@", url, filename);
 	NSTask *youtubeDownloadTask = [[NSTask alloc] init];
     NSPipe *out = [NSPipe pipe];
     [youtubeDownloadTask setStandardOutput:out];
     NSLog(@"<Dionysos> Created task %@", youtubeDownloadTask);
     [youtubeDownloadTask setLaunchPath:@"/usr/bin/python3"];
     [youtubeDownloadTask setCurrentDirectoryPath:dest];
-    [youtubeDownloadTask setArguments:@[@"-m", @"youtube_dl", url, @"-f", @"best[ext=mp4]", @"--no-continue", @"-o", @"DionysosDownloader.mp4"]];
+    [youtubeDownloadTask 
+        setArguments:@[
+            @"-m", 
+            @"youtube_dl", 
+            url, 
+            @"-f", 
+            @"best[ext=mp4]", 
+            @"--no-continue", 
+            @"-o", 
+            [NSString stringWithFormat:@"%@.mp4", filename]
+        ]
+    ];
     NSLog(@"<Dionysos> Launching NSTask");
     [youtubeDownloadTask launch];
     [youtubeDownloadTask waitUntilExit];

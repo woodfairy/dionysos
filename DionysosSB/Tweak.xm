@@ -33,9 +33,13 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
         center = [MRYIPCCenter centerNamed:@"0xcc.woodfairy.DionysosServer"];
         [center addTarget:^NSString* (NSDictionary* args){
             DionysosDownloader *downloader = [[DionysosDownloader alloc] init];
-            NSString *output = [downloader downloadFrom:args[@"url"] destination:@"/var/mobile/Downloads"];
+            NSString *output = [downloader downloadFrom:args[@"url"] destination:@"/var/mobile/Downloads" title:args[@"title"]];
             DionysosConverter *converter = [[DionysosConverter alloc] init];
-            int rc = [converter convert:@"/var/mobile/Downloads/DionysosDownloader.mp4" toTarget:@"/var/mobile/Downloads/DionysosConverter.wav"];
+            int rc = [
+						converter 
+						convert: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp4", args[@"title"]] 
+						toTarget: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp3", args[@"title"]]
+					];
             NSLog(@"<Dionysos> Conversion finished with rc %d", rc);
             return output;
 	    } forSelector:@selector(downloadAndConvert:)];

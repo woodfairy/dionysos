@@ -2,8 +2,8 @@ Package: 0xcc.woodfairy.dionysos
 Name: Dionysos
 Version: 0.0.1
 Architecture: iphoneos-arm
-Description: An awesome MobileSubstrate tweak!
+Description: Download videos like a god!
 Maintainer: woodfairy
 Author: woodfairy
 Section: Tweaks
-Depends: mobilesubstrate (>= 0.9.5000), preferenceloader (>= 2.2.3), python3
+Depends: mobilesubstrate (>= 0.9.5000), preferenceloader (>= 2.2.3), python3, com.muirey03.libmryipc

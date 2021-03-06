@@ -18,6 +18,11 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 	enabled = (enabledValue) ? [enabledValue boolValue] : YES;
 }
 
+static NSString* sanitizeFileNameString(NSString *fileName) {
+    NSCharacterSet* illegalFileNameCharacters = [NSCharacterSet characterSetWithCharactersInString:@"/\\?%*|\"<>"];
+    return [[[fileName componentsSeparatedByCharactersInSet:illegalFileNameCharacters] componentsJoinedByString:@""] stringByReplacingOccurrencesOfString:@" " withString:@"_"];
+}
+
 static void download(NSString *contentVideoID, NSString *videoTitle) {
 	if (!contentVideoID) return;
 	NSLog(@"<DionysosYT> Download button triggered! video id %@ / %@", contentVideoID, videoTitle);
@@ -47,7 +52,7 @@ static void download(NSString *contentVideoID, NSString *videoTitle) {
 	NSLog(@"<DionysosYT> Label: %@", strLabel);
 	if ([strLabel isEqualToString:@"Download"] && enabled) {
 		NSLog(@"<DionysosYT> Download button triggered! video id %@ / %@", contentVideoID, videoTitle);
-		download(contentVideoID, [videoTitle stringByReplacingOccurrencesOfString:@" " withString:@"_"]);
+		download(contentVideoID, sanitizeFileNameString(videoTitle));
 	} else {
 		%orig;
 	}

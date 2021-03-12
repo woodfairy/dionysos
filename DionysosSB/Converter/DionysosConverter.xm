@@ -45,7 +45,7 @@
 		@"-c:v",
 		@"copy",
 		@"-c:a",
-		@"copy",
+		@"aac",
 		outputFilename
 	];
 

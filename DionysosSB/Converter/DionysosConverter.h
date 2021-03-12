@@ -12,4 +12,5 @@
 
 @interface DionysosConverter : NSObject
 -(int)convert:(NSString *)source toTarget:(NSString *)target;
+-(int)mergeVideo:(NSString *)videoFilename withAudio:(NSString *)audioFilename out:(NSString *)outputFilename;
 @end

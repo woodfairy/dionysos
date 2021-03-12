@@ -3,5 +3,6 @@
 
 
 @interface DionysosDownloader : NSObject
--(NSString*)downloadFrom:(NSString* )url destination:(NSString *) dest title:(NSString *)filename;
+-(NSString*) download:(NSString* )url format:(NSString *)format destination:(NSString *)dest;
+-(NSString *) getFilename:(NSString *)url format:(NSString *)format;
 @end

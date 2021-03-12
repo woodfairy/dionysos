@@ -101,18 +101,29 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 	if (enabled) { // TODO: put converter and downloader into separate processes / daemon
         center = [MRYIPCCenter centerNamed:@"0xcc.woodfairy.DionysosServer"];
         [center addTarget:^NSString* (NSDictionary* args){
-			fakeNotification(@"com.apple.MobileSMS", [NSDate date], [NSString stringWithFormat:@"%@\nDownload started.", args[@"title"]], true);
+			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@\nDownload started.", args[@"title"]], true);
             DionysosDownloader *downloader = [[DionysosDownloader alloc] init];
-            NSString *output = [downloader downloadFrom:args[@"url"] destination:@"/var/mobile/Downloads" title:args[@"title"]];
-			fakeNotification(@"com.apple.MobileSMS", [NSDate date], [NSString stringWithFormat:@"%@ downloaded succesfully.", args[@"title"]], true);
+            NSString *audioFilename = [[downloader getFilename:args[@"url"] format:@"bestaudio"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSString *output = [[downloader download:args[@"url"] format:@"bestaudio" destination:@"/var/mobile/Downloads"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            NSString *videoFilename = [[downloader getFilename:args[@"url"] format:@"bestvideo"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+            output = [downloader download:args[@"url"] format:@"bestvideo" destination:@"/var/mobile/Downloads"];
+			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@ downloaded succesfully.", args[@"title"]], true);
             DionysosConverter *converter = [[DionysosConverter alloc] init];
             int rc = [
-						converter 
-						convert: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp4", args[@"title"]] 
-						toTarget: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp3", args[@"title"]]
-					];
+                converter
+                mergeVideo: [NSString stringWithFormat:@"/var/mobile/Downloads/%@", videoFilename]
+                withAudio: [NSString stringWithFormat:@"/var/mobile/Downloads/%@", audioFilename]
+                out: [NSString stringWithFormat:@"/var/mobile/Downloads/%@", args[@"title"]]
+            ];
+            NSLog(@"<Dionysos> Merge finished with rc %d", rc);
+			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@ merged succesfully.", args[@"title"]], true);
+            /*rc = [
+				converter 
+				convert: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp4", args[@"title"]]
+				toTarget: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp3", args[@"title"]]
+			];
             NSLog(@"<Dionysos> Conversion finished with rc %d", rc);
-			fakeNotification(@"com.apple.MobileSMS", [NSDate date], [NSString stringWithFormat:@"%@ converted succesfully.", args[@"title"]], true);
+			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@ converted succesfully.", args[@"title"]], true);*/
             return output;
 	    } forSelector:@selector(downloadAndConvert:)];
 	}

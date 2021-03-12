@@ -207,17 +207,4 @@ extern NSString *const LIB_NAME;
  */
 + (void)closeFFmpegPipe: (NSString*)ffmpegPipePath;
 
-/**
- * Returns log output of last executed single FFmpeg/FFprobe command.
- *
- * This method does not support executing multiple concurrent commands. If you execute
- * multiple commands at the same time, this method will return output from all executions.
- *
- * Please note that disabling redirection using MobileFFmpegConfig.disableRedirection() method
- * also disables this functionality.
- *
- * @return output of last executed command
- */
-+ (NSString*)getLastCommandOutput;
-
 @end

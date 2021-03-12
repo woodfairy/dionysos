@@ -26,11 +26,9 @@ static NSString* sanitizeFileNameString(NSString *fileName) {
 static void download(NSString *contentVideoID, NSString *videoTitle) {
 	if (!contentVideoID) return;
 	NSLog(@"<DionysosYT> Download button triggered! video id %@ / %@", contentVideoID, videoTitle);
-	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		NSString *url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", contentVideoID];
-		NSString *result = [center callExternalMethod:@selector(downloadAndConvert:) withArguments:@{@"url" : url, @"title": videoTitle}];
-		NSLog(@"Finished external call with result %@", result);
-	});
+	NSString *url = [NSString stringWithFormat:@"https://www.youtube.com/watch?v=%@", contentVideoID];
+	NSString *result = [center callExternalMethod:@selector(downloadAndConvert:) withArguments:@{@"url" : url, @"title": videoTitle}];
+	NSLog(@"Finished external call with result %@", result);
 }
 
 

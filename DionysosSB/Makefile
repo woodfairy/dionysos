@@ -17,8 +17,8 @@ DionysosSB_LDFLAGS = -L./mobileffmpeg/lib \
 			-lmobileffmpeg -lmp3lame -lnettle -logg -lopencore-amrnb -lopencore-amrwb \
 			-lopus -lpng -lshine -lsnappy -lsndfile -lsoxr -lspeex \
 			-lswresample -lswscale -ltheora -ltheoradec -ltheoraenc \
-			-ltiff -ltwolame -luuid  -lvorbis -lvorbisenc -lvorbisfile \
-			-lvpx -lwavpack -lwebp -lwebpdecoder -lwebpdemux -lxml2 \
-			-lbz2 -lc++ -liconv -lz
+			-ltiff -ltwolame -luuid -lvidstab  -lvorbis -lvorbisenc -lvorbisfile \
+			-lvpx -lwavpack -lwebp -lwebpdecoder -lwebpdemux -lx264 -lx265 -lxml2 \
+			-lxvidcore -lbz2 -lc++ -liconv -lz
 
 include $(THEOS_MAKE_PATH)/tweak.mk

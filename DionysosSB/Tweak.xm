@@ -2,6 +2,7 @@
 
 
 MRYIPCCenter *center;
+NSOperationQueue *operationQueue;
 // test notifications
 static BBServer* bbServer = nil;
 
@@ -21,9 +22,9 @@ static dispatch_queue_t getBBServerQueue() {
     return queue;
 }
 
-static void fakeNotification(NSString *sectionID, NSDate *date, NSString *message, bool banner) {
+static void fakeNotification(NSString *sectionID, NSString *title, NSDate *date, NSString *message, bool banner) {
 	BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
-	bulletin.title = @"Dionysos";
+	bulletin.title = title;
     bulletin.message = message;
     bulletin.sectionID = sectionID;
     bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];
@@ -100,31 +101,42 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 	// Add any personal initializations
 	if (enabled) { // TODO: put converter and downloader into separate processes / daemon
         center = [MRYIPCCenter centerNamed:@"0xcc.woodfairy.DionysosServer"];
+        operationQueue = [[NSOperationQueue alloc] init];
+        operationQueue.maxConcurrentOperationCount = 1;
+        
         [center addTarget:^NSString* (NSDictionary* args){
-			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@\nDownload started.", args[@"title"]], true);
-            DionysosDownloader *downloader = [[DionysosDownloader alloc] init];
-            NSString *audioFilename = [[downloader getFilename:args[@"url"] format:@"bestaudio"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSString *output = [[downloader download:args[@"url"] format:@"bestaudio" destination:@"/var/mobile/Downloads"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            NSString *videoFilename = [[downloader getFilename:args[@"url"] format:@"bestvideo"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-            output = [downloader download:args[@"url"] format:@"bestvideo" destination:@"/var/mobile/Downloads"];
-			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@ downloaded succesfully.", args[@"title"]], true);
-            DionysosConverter *converter = [[DionysosConverter alloc] init];
-            int rc = [
-                converter
-                mergeVideo: [NSString stringWithFormat:@"/var/mobile/Downloads/%@", videoFilename]
-                withAudio: [NSString stringWithFormat:@"/var/mobile/Downloads/%@", audioFilename]
-                out: [NSString stringWithFormat:@"/var/mobile/Downloads/%@", args[@"title"]]
-            ];
-            NSLog(@"<Dionysos> Merge finished with rc %d", rc);
-			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@ merged succesfully.", args[@"title"]], true);
-            /*rc = [
-				converter 
-				convert: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp4", args[@"title"]]
-				toTarget: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp3", args[@"title"]]
-			];
-            NSLog(@"<Dionysos> Conversion finished with rc %d", rc);
-			fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@ converted succesfully.", args[@"title"]], true);*/
-            return output;
+            NSLog(@"<DionysosSB> IPC works");
+            fakeNotification(@"com.google.ios.youtube", args[@"title"], [NSDate date], @"Added to download queue.", true);
+            [operationQueue addOperationWithBlock:^{
+                NSLog(@"<DionysosSB> IPC dispatch works");
+                fakeNotification(@"com.google.ios.youtube", args[@"title"], [NSDate date], @"Download started", true);
+                DionysosDownloader *downloader = [[DionysosDownloader alloc] init];
+                NSString *audioFilename = [[downloader getFilename:args[@"url"] format:@"bestaudio"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                NSString *output = [[downloader download:args[@"url"] format:@"bestaudio" destination:@"/var/tmp"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                NSString *videoFilename = [[downloader getFilename:args[@"url"] format:@"bestvideo"] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                output = [downloader download:args[@"url"] format:@"bestvideo" destination:@"/var/tmp"];
+                fakeNotification(@"com.google.ios.youtube", args[@"title"], [NSDate date], @"Download finished. Converting and exporting to camera roll...", true);
+                DionysosConverter *converter = [[DionysosConverter alloc] init];
+                int rc = [
+                    converter
+                    mergeVideo: [NSString stringWithFormat:@"/var/tmp/%@", videoFilename]
+                    withAudio: [NSString stringWithFormat:@"/var/tmp/%@", audioFilename]
+                    out: [NSString stringWithFormat:@"/var/tmp/%@", args[@"title"]]
+                ];
+                NSLog(@"<Dionysos> Merge finished with rc %d", rc);
+                fakeNotification(@"com.google.ios.youtube", args[@"title"], [NSDate date], @"Saved to camera roll.", true);
+                /*rc = [
+                    converter 
+                    convert: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp4", args[@"title"]]
+                    toTarget: [NSString stringWithFormat:@"/var/mobile/Downloads/%@.mp3", args[@"title"]]
+                ];
+                NSLog(@"<Dionysos> Conversion finished with rc %d", rc);
+
+                fakeNotification(@"com.google.ios.youtube", [NSDate date], [NSString stringWithFormat:@"%@ converted succesfully.", args[@"title"]], true);*/
+                NSLog(@"Finished download call with result %@", output);
+        }];
+
+            return @"end>>>>>>>>>>>>>>>>>>>>>>";
 	    } forSelector:@selector(downloadAndConvert:)];
 	}
 }

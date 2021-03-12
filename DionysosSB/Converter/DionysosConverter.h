@@ -9,8 +9,12 @@
 #import <AvFoundation/AvFoundation.h>
 #import <MobileFFmpegConfig.h>
 #import <MobileFFmpeg.h>
+#import <UIKit/UIKit.h>
 
 @interface DionysosConverter : NSObject
--(int)convert:(NSString *)source toTarget:(NSString *)target;
+-(int)convertVideo:(NSString *)source toAudio:(NSString *)target;
 -(int)mergeVideo:(NSString *)videoFilename withAudio:(NSString *)audioFilename out:(NSString *)outputFilename;
+-(int)convertMkv:(NSString *)videoFilename to:(NSString *) format;
+-(int)ffmpegWithArguments:(NSArray *)arguments;
+-(void)video:(NSString*)videoPath didFinishSavingWithError:(NSError*)error contextInfo:(void*)contextInfo;
 @end

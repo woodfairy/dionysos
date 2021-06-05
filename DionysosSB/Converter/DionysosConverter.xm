@@ -48,6 +48,7 @@
 	NSLog(@"Deleted single audio and video file %@", error);
 	if (outputIsMkv && rc == RETURN_CODE_SUCCESS) {
 		[self convertMkv:outputFilename to:@".mp4"];
+		// TODO: single responsibility
 		UISaveVideoAtPathToSavedPhotosAlbum([outputFilename stringByReplacingOccurrencesOfString:@".mkv" withString:@".mp4"], self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
 		[fileManager removeItemAtPath:outputFilename error:&error];
 	} else {
@@ -103,9 +104,20 @@
 
 - (void)video:(NSString*)videoPath didFinishSavingWithError:(NSError*)error contextInfo:(void*)contextInfo {
     if (error) {
-        NSLog(@"<DionsosSB> Saving to camera roll failed!");
+        NSLog(@"<DionsosSB> Saving to camera roll failed! %@", error);
     } else {
 		NSLog(@"<DionysosSB> Saving to camera roll succesful!");
     }
+
+	NSError *deletionError = nil;
+	NSFileManager *fileManager = [NSFileManager defaultManager];
+	[fileManager removeItemAtPath:videoPath error:&deletionError];
+
+	if (error) {
+		NSLog(@"<DionysosConverter> %@ could not be deleted. Error:  %@", videoPath, deletionError);
+	} else {
+		NSLog(@"<DionysosConverter> %@ deleted succesfully.", videoPath);
+	}
+	
 }
 @end

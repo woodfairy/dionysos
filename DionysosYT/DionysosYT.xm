@@ -40,15 +40,14 @@ static void download(NSString *contentVideoID, NSString *videoTitle) {
 }
 %end
 
-
 %hook YTSlimVideoDetailsActionView
 -(void)didTapButton:(id)arg1 {
 	NSLog(@"<DionysosYT> didTapButton");
-	YTFormattedStringLabel *label = [self label];
-	NSAttributedString *attributedString = label.attributedText;
-	NSString *strLabel = attributedString.string;
-	NSLog(@"<DionysosYT> Label: %@", strLabel);
-	if ([strLabel isEqualToString:@"Download"] && enabled) {
+	YTSlimVideoScrollableDetailsActionView *visibilityDelegate = [self visibilityDelegate];
+	NSLog(@"<DionysosYT> visibilityDelegate %@", visibilityDelegate);
+	NSLog(@"<DionysosYT> offlineActionView %@", [visibilityDelegate offlineActionView]);
+	NSLog(@"<DionysosYT> self %@", self);
+	if ([visibilityDelegate offlineActionView] == self) {
 		NSLog(@"<DionysosYT> Download button triggered! video id %@ / %@", contentVideoID, videoTitle);
 		download(contentVideoID, sanitizeFileNameString(videoTitle));
 	} else {

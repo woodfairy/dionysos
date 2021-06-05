@@ -4,8 +4,14 @@
 
 
 -(void)fakeNotification:(NSString *)sectionID title:(NSString *)title date:(NSDate *)date message:(NSString *)message banner:(BOOL) banner {
-	BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
-	bulletin.title = title;
+
+    if (!_bbServer) {
+        NSLog(@"<DionysosFakeNotifier> No BBServer found! Bailing out.");
+        return;
+    }
+
+    BBBulletin* bulletin = [[%c(BBBulletin) alloc] init];
+    bulletin.title = title;
     bulletin.message = message;
     bulletin.sectionID = sectionID;
     bulletin.bulletinID = [[NSProcessInfo processInfo] globallyUniqueString];

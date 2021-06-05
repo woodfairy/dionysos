@@ -1,21 +1,4 @@
 #import "DionysosSB.h"
-#import "FakeNotifier/BBServer.h"
-#import "FakeNotifier/FakeNotifier.h"
-
-MRYIPCCenter *center;
-NSOperationQueue *operationQueue;
-DionysosDownloader *downloader;
-DionysosConverter *converter;
-static FakeNotifier *fakeNotifier = nil;
-
-@interface NSUserDefaults (Tweak_Category)
-- (id)objectForKey:(NSString *)key inDomain:(NSString *)domain;
-- (void)setObject:(id)value forKey:(NSString *)key inDomain:(NSString *)domain;
-@end
-
-static NSString *nsDomainString = @"0xcc.woodfairy.dionysos";
-static NSString *nsNotificationString = @"0xcc.woodfairy.dionysos/preferences.changed";
-static BOOL enabled;
 
 static void notificationCallback(CFNotificationCenterRef center, void *observer, CFStringRef name, const void *object, CFDictionaryRef userInfo) {
 	NSNumber *enabledValue = (NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:@"enabled" inDomain:nsDomainString];
@@ -43,7 +26,7 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 
 
 %ctor {
-    NSLog(@"Injecting into SB");
+    NSLog(@"<DionysosSB> Injecting into SB");
 	// Set variables on start up
 	notificationCallback(NULL, NULL, NULL, NULL, NULL);
 

@@ -9,10 +9,8 @@
 
 @interface YTSlimVideoDetailsActionView : UIView
 -(void)didTapButton:(id)arg1;
+-(id)visibilityDelegate;
 -(id)label;
-@end
-
-@interface YTFormattedStringLabel : UILabel
 @end
 
 @interface YTISlimVideoInformationRenderer : NSObject
@@ -24,3 +22,6 @@
 -(id)dropdownOptionTitle;
 @end
 
+@interface YTSlimVideoScrollableDetailsActionView : UIView
+-(id)offlineActionView;
+@end

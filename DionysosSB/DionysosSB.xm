@@ -34,12 +34,13 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
 	CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(), NULL, notificationCallback, (CFStringRef)nsNotificationString, NULL, CFNotificationSuspensionBehaviorCoalesce);
     
     fakeNotifier = [[FakeNotifier alloc] init];
-
     center = [MRYIPCCenter centerNamed:@"0xcc.woodfairy.DionysosServer"];
-    operationQueue = [[NSOperationQueue alloc] init];
-    operationQueue.maxConcurrentOperationCount = 4;
+    
+    // TODO: move to controller
     downloader = [[DionysosDownloader alloc] init];
     converter = [[DionysosConverter alloc] init];
+    queue = [[DionysosQueue alloc] init];
+    [queue createWithMaxConcurrentOperationCount:4];
 
     if (enabled) {
         [center addTarget:^NSString* (NSDictionary* args){
@@ -51,7 +52,7 @@ static void notificationCallback(CFNotificationCenterRef center, void *observer,
                       banner:YES
         ];
 
-        [operationQueue addOperationWithBlock:^{
+        [[queue queue] addOperationWithBlock:^{
             NSLog(@"<DionysosSB> IPC dispatch works");
             [fakeNotifier fakeNotification:@"com.google.ios.youtube" 
                           title:args[@"title"] 

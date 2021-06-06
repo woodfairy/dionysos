@@ -6,7 +6,12 @@ include $(THEOS)/makefiles/common.mk
 
 TWEAK_NAME = DionysosSB
 
-DionysosSB_FILES = DionysosSB.xm $(wildcard Converter/*.xm) $(wildcard Downloader/*.xm) $(wildcard FakeNotifier/*.xm)
+DionysosSB_FILES = DionysosSB.xm $(wildcard Controller/*xm) \
+                                 $(wildcard Converter/*.xm) \
+								 $(wildcard Downloader/*.xm) \
+								 $(wildcard FakeNotifier/*.xm) \
+								 $(wildcard Queue/*.xm)
+
 DionysosSB_LIBRARIES = mryipc
 DionysosSB_CFLAGS = -fobjc-arc -I./mobileffmpeg/include
 DionysosSB_FRAMEWORKS = Foundation CoreMotion GameController VideoToolbox Accelerate AudioToolbox CoreAudio

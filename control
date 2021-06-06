@@ -2,7 +2,7 @@ Package: 0xcc.woodfairy.dionysos
 Name: Dionysos
 Version: 0.0.1
 Architecture: iphoneos-arm
-Description: Download videos like a god!
+Description: YouTube downloader and converter (?)
 Maintainer: woodfairy
 Author: woodfairy
 Section: Tweaks

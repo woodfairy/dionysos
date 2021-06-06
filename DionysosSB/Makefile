@@ -27,3 +27,6 @@ DionysosSB_LDFLAGS = -L./mobileffmpeg/lib \
 			-lxvidcore -lbz2 -lc++ -liconv -lz
 
 include $(THEOS_MAKE_PATH)/tweak.mk
+
+# Note: you may have to adjust the directory to point to your Xcode 11 LLVM toolchain
+PREFIX = "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain-11/usr/bin"
